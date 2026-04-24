@@ -1,0 +1,27 @@
+experiments:
+  policy:
+    name: RealityITMPolicyV2
+    text_prompt: Seems like there is a target_object ahead.
+    pointnav_policy_path: data/pointnav_weights.pth
+    depth_image_shape:
+    - 480
+    - 640
+    pointnav_stop_radius: 0.9
+    use_max_confidence: false
+    object_map_erosion_size: 5
+    exploration_thresh: 0.0
+    obstacle_map_area_threshold: 1.5
+    min_obstacle_height: 0.1
+    max_obstacle_height: 0.5
+    hole_area_thresh: 100000
+    use_vqa: false
+    vqa_prompt: 'Is this '
+    coco_threshold: 0.8
+    non_coco_threshold: 0.4
+    agent_radius: 0.25
+  env:
+    goal: potted plant
+    max_body_cam_depth: 3.5
+    max_lin_dist: 0.25
+    max_ang_dist: 0.52
+    time_step: 0.5

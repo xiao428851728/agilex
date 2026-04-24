@@ -1,0 +1,182 @@
+# # /home/sxz/sjd/vlfm/config/minimal_textinst.yaml 关键段
+# habitat:
+#   seed: 123
+
+#   environment:
+#     max_episode_steps: 500
+#     max_episode_seconds: 10000000
+#     iterator_options:
+#       shuffle: false
+#       num_episode_sample: -1
+#       seed: 123
+#       max_scene_repeat_episodes: -1
+#       max_scene_repeat_steps: -1
+
+#   dataset:
+#     type: TextInstNav-v1
+#     data_path: /home/sxz/sjd/vlfm/data/datasets/instancenav/val/val.json.gz
+#     split: val
+#     scenes_dir: /home/sxz/sjd/vlfm/data/scene_datasets
+#     content_scenes: ["*"]
+
+#   simulator:
+#     type: Sim-v0
+#     scene_dataset: /home/sxz/sjd/vlfm/data/scene_datasets/hm3d_v0.2/hm3d_annotated_basis.scene_dataset_config.json
+#     default_agent_id: 0
+#     action_space_config: v1
+#     forward_step_size: 0.25
+#     turn_angle: 30.0
+#     tilt_angle: 30.0
+#     habitat_sim_v0:
+#       gpu_device_id: 0
+#       enable_physics: false
+#       allow_sliding: true
+#       gpu_gpu: false
+#     additional_object_paths: []
+#     agents:
+#       agent_0:
+#         height: 1.5
+#         radius: 0.1
+#         sim_sensors:
+#           rgb_sensor:
+#             type: HabitatSimRGBSensor
+#             width: 640
+#             height: 480
+#             position: [0.0, 1.5, 0.0]
+#             orientation: [0.0, 0.0, 0.0]
+#             hfov: 79
+#             sensor_subtype: PINHOLE
+#           depth_sensor:
+#             type: HabitatSimDepthSensor
+#             width: 640
+#             height: 480
+#             position: [0.0, 1.5, 0.0]
+#             orientation: [0.0, 0.0, 0.0]
+#             hfov: 79
+#             min_depth: 0.5
+#             max_depth: 5.0
+#             normalize_depth: true
+#             sensor_subtype: PINHOLE
+#     agents_order: ["agent_0"]
+
+#   task:
+#     type: Nav-v0
+#     end_on_success: true
+
+#     sensors: [TEXT_GOAL_SENSOR]
+#     lab_sensors:
+#       TEXT_GOAL_SENSOR:
+#         type: TextGoalSensor
+
+#     measurements:
+#       distance_to_goal:
+#         type: DistanceToGoal
+#         distance_to: POINT
+#       success:
+#         type: Success
+#         success_distance: 0.2
+#       spl:
+#         type: SPL
+
+#     actions:
+#       stop:
+#         type: StopAction
+#       move_forward:
+#         type: MoveForwardAction
+#       turn_left:
+#         type: TurnLeftAction
+#       turn_right:
+#         type: TurnRightAction
+ 
+habitat:
+  seed: 123
+
+  environment:
+    max_episode_steps: 500
+    max_episode_seconds: 0
+    iterator_options:
+      shuffle: false
+      num_episode_sample: -1
+      seed: 123
+      max_scene_repeat_episodes: -1
+      max_scene_repeat_steps: -1
+
+  dataset:
+    type: TextInstNav-v1
+    # 指向 split 目录（里边有 content/ 与 val_text.json.gz）
+    data_path: /home/sxz/sjd/vlfm/data/datasets/instancenav/val
+    split: val
+    scenes_dir: /home/sxz/sjd/vlfm/data/scene_datasets
+
+  simulator:
+    type: Sim-v0
+
+    # 注意：scene_dataset 仍然要放在 simulator 顶层
+    scene_dataset: /home/sxz/sjd/vlfm/data/scene_datasets/hm3d_v0.2/hm3d_annotated_basis.scene_dataset_config.json
+
+    action_space_config: v1
+    default_agent_id: 0
+    forward_step_size: 0.25
+    turn_angle: 30.0
+    tilt_angle: 30.0
+
+    habitat_sim_v0:
+      gpu_device_id: 0
+      enable_physics: false
+      allow_sliding: true
+      gpu_gpu: false        # ★ 加上这一行，修复“gpu_gpu not in struct”报错
+
+    agents:
+      agent_0:
+        height: 1.5
+        radius: 0.1
+        sim_sensors:
+          rgb_sensor:
+            type: HabitatSimRGBSensor
+            width: 640
+            height: 480
+            position: [0.0, 1.5, 0.0]
+            orientation: [0.0, 0.0, 0.0]
+            hfov: 79
+            sensor_subtype: PINHOLE
+          depth_sensor:
+            type: HabitatSimDepthSensor
+            width: 640
+            height: 480
+            position: [0.0, 1.5, 0.0]
+            orientation: [0.0, 0.0, 0.0]
+            hfov: 79
+            min_depth: 0.5
+            max_depth: 5.0
+            normalize_depth: true
+            sensor_subtype: PINHOLE
+    agents_order: ["agent_0"]
+  task:
+    type: Nav-v0
+    end_on_success: true
+
+    # 明确写上 actions，避免 omegaconf 结构校验缺项
+    actions:
+      stop:
+        type: StopAction
+      move_forward:
+        type: MoveForwardAction
+      turn_left:
+        type: TurnLeftAction
+      turn_right:
+        type: TurnRightAction
+
+    sensors: [TEXT_GOAL_SENSOR]
+    lab_sensors:
+      TEXT_GOAL_SENSOR:
+        type: TextGoalSensor
+
+    measurements:
+      distance_to_goal:
+        type: DistanceToGoal
+        distance_to: POINT
+      success:
+        type: Success
+        success_distance: 0.2
+      spl:
+        type: SPL

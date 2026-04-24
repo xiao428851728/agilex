@@ -1,0 +1,99 @@
+habitat:
+  seed: 123
+
+  environment:
+    max_episode_steps: 500
+    max_episode_seconds: 10000000
+    iterator_options:
+      shuffle: false
+      num_episode_sample: -1
+      seed: 123
+      max_scene_repeat_episodes: -1
+      max_scene_repeat_steps: -1
+
+  simulator:
+    type: Sim-v0
+    default_agent_id: 0
+    action_space_config: v1
+    forward_step_size: 0.25
+    turn_angle: 30.0
+    tilt_angle: 30.0
+    additional_object_paths: []
+    scene_dataset: /home/sxz/sjd/vlfm/data/scene_datasets/hm3d_v0.2/hm3d_annotated_basis.scene_dataset_config.json
+    habitat_sim_v0:
+      gpu_device_id: -1         # CPU：-1；如需 GPU 改成 0/1…
+      gpu_gpu: false            # 保持与你当前环境一致
+      enable_physics: false
+
+    agents:
+      main_agent:
+        radius: 0.18
+        height: 0.88
+        sim_sensors:
+          rgb_sensor:
+            type: HabitatSimRGBSensor
+            width: 256
+            height: 256
+            position: [0.0, 0.88, 0.0]
+            orientation: [0.0, 0.0, 0.0]
+            hfov: 79
+            sensor_subtype: PINHOLE
+            noise_model: None
+            noise_model_kwargs: {}
+          depth_sensor:
+            type: HabitatSimDepthSensor
+            width: 256
+            height: 256
+            position: [0.0, 0.88, 0.0]
+            orientation: [0.0, 0.0, 0.0]
+            hfov: 79
+            sensor_subtype: PINHOLE
+            noise_model: None
+            noise_model_kwargs: {}
+            min_depth: 0.5
+            max_depth: 5.0
+            normalize_depth: true
+    agents_order: [main_agent]
+
+  task:
+    type: Nav-v0
+    end_on_success: true
+
+    sensors: [pointgoal_with_gps_compass_sensor, heading_sensor, gps_sensor]
+    lab_sensors:
+      pointgoal_with_gps_compass_sensor: {type: PointGoalWithGPSCompassSensor}
+      heading_sensor: {type: HeadingSensor}
+      gps_sensor: {type: GPSSensor, dimensionality: 2}
+
+    measurements:
+      distance_to_goal:
+        type: DistanceToGoal
+        distance_to: POINT        # 关键：避免访问缺失的 view_points
+      success:
+        type: Success
+        success_distance: 1.0
+      spl:
+        type: SPL
+
+    actions:
+      stop:         {type: StopAction}
+      move_forward: {type: MoveForwardAction}
+      turn_left:    {type: TurnLeftAction}
+      turn_right:   {type: TurnRightAction}
+
+  dataset:
+    type: PointNav-v1
+    split: val
+    data_path: /home/sxz/sjd/vlfm/data/datasets/textinst_pointnav/hm3d/val/val.json.gz
+    scenes_dir: /home/sxz/sjd/vlfm/data/scene_datasets
+    content_scenes: ["*"]
+    environment:
+      iterator_options:
+        shuffle: false
+        num_episode_sample: -1
+        seed: 123
+        max_scene_repeat_episodes: -1
+        max_scene_repeat_steps: -1
+
+habitat_baselines:
+  num_environments: 1

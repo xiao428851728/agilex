@@ -1,0 +1,76 @@
+# @package _global_
+
+defaults:
+  - /habitat_baselines: habitat_baselines_rl_config_base
+  - _self_
+
+habitat:
+  seed: 123
+
+  simulator:
+    scene_dataset: /home/sxz/sjd/vlfm/data/scene_datasets/hm3d_v0.2/hm3d_annotated_basis.scene_dataset_config.json
+    habitat_sim_v0:
+      gpu_device_id: 0
+      enable_physics: false
+    agents:
+      main_agent:
+        radius: 0.1
+        height: 1.5
+        max_climb: 0.2
+        max_turn_angle: 30.0
+        sim_sensors:
+          rgb_sensor:
+            type: HabitatSimRGBSensor
+            width: 256
+            height: 256
+            position: [0.0, 1.25, 0.0]
+            orientation: [0.0, 0.0, 0.0]
+          depth_sensor:
+            type: HabitatSimDepthSensor
+            width: 256
+            height: 256
+            position: [0.0, 1.25, 0.0]
+            orientation: [0.0, 0.0, 0.0]
+
+  task:
+    name: PointNav-v1
+    sensors: [RGB_SENSOR, DEPTH_SENSOR, POINTGOAL_WITH_GPS_COMPASS_SENSOR]
+    measurements:
+      success:
+        success_distance: 1.0
+      distance_to_goal: {type: DistanceToGoal}
+      spl: {type: SPL}
+
+  dataset:
+    type: PointNav-v1
+    split: val
+    data_path: /home/sxz/sjd/vlfm/data/datasets/textinst_pointnav/hm3d/val/val.json.gz
+    scenes_dir: /home/sxz/sjd/vlfm/data/scene_datasets
+    content_scenes: ["*"]
+    environment:
+      iterator_options:
+        shuffle: false
+        num_episode_sample: -1
+        seed: 123
+        max_scene_repeat_episodes: -1
+        max_scene_repeat_steps: -1
+        scene_repeat_coverage: 0.2
+        group_by_scene: false
+
+  environment:
+    iterator_options:
+      shuffle: false
+      num_episode_sample: -1
+      seed: 123
+      max_scene_repeat_episodes: -1
+      max_scene_repeat_steps: -1
+      scene_repeat_coverage: 0.2
+      group_by_scene: false
+
+habitat_baselines:
+  evaluate: true
+  num_environments: 1
+  eval:
+    split: val
+  eval_ckpt_path_dir: data/checkpoints
+  checkpoint_folder: data/checkpoints  

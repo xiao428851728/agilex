@@ -1,0 +1,38 @@
+# === 继承原来的 VLFM HM3D ObjectNav 实验，再做少量覆盖 ===
+defaults:
+  - experiments/vlfm_objectnav_hm3d
+
+# 评测，而不是训练
+habitat_baselines:
+  evaluate: true
+  num_environments: 10
+
+# Habitat 数据（用标准 episodes 来创建 env 与读取起终点）
+habitat:
+  seed: 200
+  dataset:
+    # 这里仍用标准任务，先确保能创建 env 和读取 episodes
+    type: ObjectNav-v1
+    split: val
+    # 指向 HM3D ObjectNav 的标准 episodes（必须是“非空”的那个）
+    data_path: data/datasets/objectnav/hm3d/val/val.json.gz
+    # 有的版本用 scenes_dir，有的用 simulator.scene_dataset，两个都给上更稳
+    scenes_dir: data/scene_datasets/hm3d_v0.2
+  simulator:
+    scene_dataset: data/scene_datasets/hm3d_v0.2/hm3d_annotated_basis.scene_dataset_config.json
+    action_space_config: v1
+    agents:
+      main_agent:
+        sim_sensors:
+          rgb_sensor:
+            height: 480
+            width: 640
+          depth_sensor:
+            height: 480
+            width: 640
+
+# 自定义一个"旁路"字段：挂 PSL 文本路径，供你们代码里读取（Habitat 不会用它）
+psl_text:
+  enabled: true
+  text_path: data/datasets/instancenav/val/val_text.json.gz
+  queried_image_goal_data: data/goal_datasets/instancenav/hm3d_instancenav.imagenav_v2.pth

@@ -1,0 +1,26 @@
+# ROS 编译生成文件
+build/
+devel/
+install/
+log/
+.catkin_workspace
+
+# 机器人录制数据与数据集
+*.bag
+*.pkl
+*.csv
+datasets/
+data/
+
+# 深度学习模型权重
+*.pt
+*.pth
+*.onnx
+weights/
+checkpoints/
+
+# Python 缓存与环境文件
+__pycache__/
+*.pyc
+.env
+.vscode/

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+    <include file="$(find scout_bringup)/launch/open_rslidar.launch" />
+
+    <!-- 启动相机 -->
+    <include file="$(find realsense2_camera)/launch/rs_aligned_depth.launch" />
+
+    <!-- 原仓库自动导航主干：TF / move_base / gmapping -->
+    <include file="$(find scout_bringup)/launch/blind_navigation.launch" />
+
+    <!-- 保留原仓库分工：/target_goal -> send_goal -> move_base -->
+    <node pkg="scout_bringup" type="send_goal_repo_ui.py" name="auto_goal_sender" output="screen">
+    </node>
+
+    <!-- 仅在通信/UI层扩展：SLAM地图上传、Windows新版UI、WASD接管 -->
+    <node pkg="scout_bringup" type="receiver_repo_ui.py" name="data_receiver_node" output="screen">
+    </node>
+
+</launch>

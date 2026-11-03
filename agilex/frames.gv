@@ -1,0 +1,17 @@
+digraph G {
+"base_link" -> "camera_link"[label="Broadcaster: /base_link_to_camera\nAverage rate: 10.181 Hz\nMost recent transform: 1769934297.751 ( -0.060 sec old)\nBuffer length: 4.911 sec\n"];
+"base_footprint" -> "base_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1769934297.691 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "base_footprint"[label="Broadcaster: /rf2o_laser_odometry\nAverage rate: 10.198 Hz\nMost recent transform: 1769934297.650 ( 0.041 sec old)\nBuffer length: 4.903 sec\n"];
+"map" -> "odom"[label="Broadcaster: /amcl\nAverage rate: 10.202 Hz\nMost recent transform: 1769934298.650 ( -0.959 sec old)\nBuffer length: 4.803 sec\n"];
+"base_link" -> "inertial_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1769934297.691 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "rslidar"[label="Broadcaster: /base_link_to_laser\nAverage rate: 10.191 Hz\nMost recent transform: 1769934297.718 ( -0.027 sec old)\nBuffer length: 4.808 sec\n"];
+"base_link" -> "imu_link"[label="Broadcaster: /base_link_to_imu\nAverage rate: 10.186 Hz\nMost recent transform: 1769934297.788 ( -0.097 sec old)\nBuffer length: 4.811 sec\n"];
+"base_link" -> "front_left_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.208 Hz\nMost recent transform: 1769934297.686 ( 0.005 sec old)\nBuffer length: 4.800 sec\n"];
+"base_link" -> "front_right_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.208 Hz\nMost recent transform: 1769934297.686 ( 0.005 sec old)\nBuffer length: 4.800 sec\n"];
+"base_link" -> "rear_left_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.208 Hz\nMost recent transform: 1769934297.686 ( 0.005 sec old)\nBuffer length: 4.800 sec\n"];
+"base_link" -> "rear_right_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.208 Hz\nMost recent transform: 1769934297.686 ( 0.005 sec old)\nBuffer length: 4.800 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1769934297.691"[ shape=plaintext ] ;
+ }->"map";
+}

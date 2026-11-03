@@ -1,0 +1,28 @@
+# Copyright [2023] Boston Dynamics AI Institute, Inc.
+
+name: AgilexNav CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  agilex_nav_main_build:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    container:
+      image: ghcr.io/bdaiinstitute/bdaii_agilex_nav:main
+    steps:
+    - uses: actions/checkout@v3
+    - name: Pytest
+      run: |
+        pip install -e .[habitat]
+        pytest
